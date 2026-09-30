@@ -1,9 +1,9 @@
 # recv-sweep-brake — charter fences
 
-**Status:** LOCAL_SCAFFOLD · private · LaunchGate-before-expansion  
+**Status:** public GitHub · not on npm · LaunchGate-before-expansion  
 **As of:** 2026-09-30 (ET)
 
-This package is the founder **no-auto-sweep** fence. Keep the surface honest. No public remote / npm until founder + LaunchGate.
+This package is the founder **no-auto-sweep** fence. Keep the surface honest. Public GitHub source is OK. No npm publish and no Polar until founder + LaunchGate.
 
 ## Job (P0)
 
@@ -32,7 +32,7 @@ Send-rail: `send-approve-bound` / `send-permit2-bound` / `send-idempotency` (com
 - Explicit operator `reclassify(assetKey, "clear", reason)` — toxic/quarantine never auto-clear
 - Minimal balance-view stub: `spendable` vs `quarantined` vs `toxic` + `degraded` when store down (no dashboard product)
 - offline `demo:offline` + unit tests
-- MIT, self-hosted, local-only until founder
+- MIT, self-hosted; public GitHub OK; not on npm until founder
 
 ## Out of scope / fences
 
@@ -42,7 +42,7 @@ Send-rail: `send-approve-bound` / `send-permit2-bound` / `send-idempotency` (com
 | **No custody / Safe / SaaS / mainnet SLA** | Charter out. |
 | **No Soft\*** | Forbidden. |
 | **No Polar / checkout URLs** | None. |
-| **No public/npm until founder** | Private local scaffold only. |
+| **No npm / Polar until founder** | Public GitHub OK. No `npm publish`, no Polar/checkout until LaunchGate + founder GO. |
 | **BurnBrake out** | HTTP spend governor is unrelated; do not meter inbound credits as BurnBrake. |
 | **Lookalike** | Local pin core only if added; intel adapters optional with FC-on-spend-clearance — not oracle SaaS. |
 | **LaunchGate-before-expansion** | Hosted ingest, treasury UX, pager SKUs need LaunchGate. |

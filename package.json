@@ -6,23 +6,53 @@
   "main": "./dist/api.js",
   "types": "./dist/api.d.ts",
   "exports": {
-    ".": { "types": "./dist/api.d.ts", "import": "./dist/api.js" }
+    ".": {
+      "types": "./dist/api.d.ts",
+      "import": "./dist/api.js"
+    }
   },
-  "files": ["dist", "docs/fixtures/offline.expected.txt", "SECURITY.md", "CHARTER.md", "LICENSE", "README.md"],
+  "files": [
+    "dist",
+    "docs/fixtures/offline.expected.txt",
+    "SECURITY.md",
+    "CHARTER.md",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
     "lint": "tsc --noEmit",
     "demo:offline": "npm run build && node scripts/demo-offline.mjs"
   },
-  "engines": { "node": ">=20" },
-  "keywords": ["ethereum", "receive", "quarantine", "sweep-brake", "agent", "fail-closed"],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ethereum",
+    "receive",
+    "quarantine",
+    "sweep-brake",
+    "agent",
+    "fail-closed"
+  ],
   "license": "MIT",
-  "author": { "name": "yellowgram" },
+  "author": {
+    "name": "yellowgram",
+    "url": "https://www.yellowgram.dev"
+  },
   "private": true,
   "devDependencies": {
     "@types/node": "^20.14.0",
     "typescript": "^5.5.0",
     "vitest": "^2.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowgram/recv-sweep-brake.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yellowgram/recv-sweep-brake/issues"
+  },
+  "homepage": "https://www.yellowgram.dev/oss"
 }

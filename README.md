@@ -1,10 +1,12 @@
 # recv-sweep-brake
 
-**Status:** private LOCAL_SCAFFOLD · LaunchGate-before-expansion · not published
+More from yellowgram: [OSS tools](https://www.yellowgram.dev/oss).
+
+**Status:** public MIT source · not on npm yet · no Polar
 
 Founder **no-auto-sweep** fence: `sweep_policy.enabled` defaults **off**. Quarantine `clear` \| `quarantine` \| `toxic`. Priced-with minimal feeds: token allow, sender allow, dust-poison. Send of non-clear → deny `sweep_braked`. **No keys / signing / auto-move.**
 
-> **Charter:** [CHARTER.md](./CHARTER.md) — no Soft\* · no Polar/checkout · no custody · BurnBrake out · no public/npm until founder
+> **Charter:** [CHARTER.md](./CHARTER.md) — no Soft\* · no Polar/checkout · no custody · BurnBrake out · not published to npm
 
 ```bash
 npm install && npm test && npm run demo:offline
