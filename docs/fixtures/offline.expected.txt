@@ -1,0 +1,18 @@
+recv-sweep-brake offline demo
+no keys · no signing · no auto-move · sweep_policy.enabled default off
+
+1 sweep_policy.enabled → false
+2 clear credit → label=clear
+3 unknown token → label=quarantine
+4 dust poison → label=toxic
+5 send non-clear → allow=false code=sweep_braked
+6 send clear → allow=true code=ok_clear
+7 balance view → spendable=1 quarantined=1 toxic=1 degraded=false
+8 enabled=true still brakes quarantine → allow=false code=sweep_braked
+9 maySpend toxic enabled=true → allow=false code=sweep_braked
+10 empty allowlists default require → label=quarantine
+11 reclassify toxic→clear → allow=true code=ok_clear
+12 store down → balanceView.degraded=true spend.code=classify_store_down
+
+charter: no Soft* · no Polar · no custody · BurnBrake out · LaunchGate-before-expansion
+compose: recv classify → quarantine → sweep-brake → send; approval-watch upstream; send-rail peers
