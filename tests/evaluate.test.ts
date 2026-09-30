@@ -462,7 +462,7 @@ describe("docs honesty lines (DC1/DC2/DC4/DC5/DC6/DC7/DC9/DC10/DC12)", () => {
       "soft" + "-pay",
       "conversion" + "-pressure",
       "willingness" + "-to-pay",
-      "willingness to pay",
+      "willingness" + " to pay",
     ];
     for (const rel of scanRoots) {
       const text = readFileSync(join(root, rel), "utf8");
