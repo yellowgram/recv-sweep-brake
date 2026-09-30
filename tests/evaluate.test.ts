@@ -420,7 +420,7 @@ describe("docs honesty lines (DC1/DC2/DC4/DC5/DC6/DC7/DC9/DC10/DC12)", () => {
     const pkg = JSON.parse(
       readFileSync(join(root, "package.json"), "utf8")
     ) as Record<string, unknown>;
-    expect(pkg.private).toBe(true);
+    expect(pkg.private).toBeUndefined();
     expect(pkg.repository).toEqual({
       type: "git",
       url: "git+https://github.com/yellowgram/recv-sweep-brake.git",

@@ -2,11 +2,11 @@
 
 More from yellowgram: [OSS tools](https://www.yellowgram.dev/oss).
 
-**Status:** public MIT source · not on npm yet · no Polar
+**Status:** public MIT · npm `recv-sweep-brake@0.1.0` · no Polar
 
 Founder **no-auto-sweep** fence: `sweep_policy.enabled` defaults **off**. Quarantine `clear` \| `quarantine` \| `toxic`. Priced-with minimal feeds: token allow, sender allow, dust-poison. Send of non-clear → deny `sweep_braked`. **No keys / signing / auto-move.**
 
-> **Charter:** [CHARTER.md](./CHARTER.md) — no Soft\* · no Polar/checkout · no custody · BurnBrake out · not published to npm
+> **Charter:** [CHARTER.md](./CHARTER.md) — no Soft\* · no Polar/checkout · no custody · BurnBrake out
 
 ```bash
 npm install && npm test && npm run demo:offline
