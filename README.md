@@ -12,6 +12,8 @@ Founder **no-auto-sweep** fence: `sweep_policy.enabled` defaults **off**. Quaran
 npm install && npm test && npm run demo:offline
 ```
 
+Offline allow / deny story: [`docs/DEMO.md`](./docs/DEMO.md).
+
 ## Honesty (locked)
 
 sweep_policy.enabled defaults to false. The brake stays engaged for non-clear inbound until an asset is explicitly clear.
@@ -62,6 +64,32 @@ recv classify feeds → recv-quarantine → recv-sweep-brake ──► send clus
 ```
 
 Upstream emit/clearance peer: `recv-approval-watch` (compose mention only). Send-rail peers: `send-approve-bound`, `send-permit2-bound`, `send-idempotency` (compose mention only — not redesigned here).
+
+### Send-rail wiring (before any outbound of inbound-labeled funds)
+
+Call `maySpend` / `checkSweepAllowed` on **every** outbound transfer, spend, swap, or collect of inbound-labeled funds — not a sweep-named method check alone. This package does not redesign send peers.
+
+```ts
+import {
+  defaultSweepPolicy,
+  maySpend,
+  // checkSweepAllowed — identical semantics
+} from "recv-sweep-brake";
+
+const sweep = defaultSweepPolicy(); // enabled === false
+// store = shared quarantine store populated by ingest/classify
+
+async function beforeOutbound(assetKey: string) {
+  const gate = maySpend(sweep, store, assetKey);
+  if (!gate.allow) {
+    // sweep_braked | classify_store_down | …
+    return gate;
+  }
+  // clear only — then hand off to send-rail peers (mention only):
+  // send-approve-bound / send-permit2-bound / send-idempotency
+  return gate;
+}
+```
 
 ## License
 
