@@ -94,3 +94,7 @@ async function beforeOutbound(assetKey: string) {
 ## License
 
 MIT — [LICENSE](./LICENSE).
+
+---
+
+Part of yellowgram open source tools: https://www.yellowgram.dev/oss
