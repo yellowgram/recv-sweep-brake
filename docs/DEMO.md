@@ -11,7 +11,7 @@ npm run demo:offline
 
 `demo:offline` exits non-zero if stdout drifts from [`fixtures/offline.expected.txt`](./fixtures/offline.expected.txt).
 
-What it shows (sealed allow **and** deny):
+What it shows (fixed fixtures: allow **and** deny):
 
 1. `sweep_policy.enabled` → `false`
 2. Clear credit → `label=clear`

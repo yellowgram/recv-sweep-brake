@@ -148,7 +148,7 @@ describe("classifyInbound + sweep brake", () => {
   });
 });
 
-describe(" / design locks", () => {
+describe("defaults and invariants", () => {
   it("(1) defaultSweepPolicy().enabled === false", () => {
     expect(defaultSweepPolicy().enabled).toBe(false);
   });
@@ -386,7 +386,7 @@ describe("deprecation", () => {
     expect(PACKAGE_VERSION).toBe("0.2.0");
   });
 });
-describe("demo sealed fixture", () => {
+describe("demo fixture", () => {
   it("offline.expected.txt present and non-empty", () => {
     const root = join(dirname(fileURLToPath(import.meta.url)), "..");
     const expected = readFileSync(
