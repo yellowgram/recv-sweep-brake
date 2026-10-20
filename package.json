@@ -1,7 +1,7 @@
 {
   "name": "recv-sweep-brake",
-  "version": "0.1.0",
-  "description": "Founder no-auto-sweep fence: sweep_policy.enabled default off; quarantine clear|quarantine|toxic; deny sweep_braked on send of non-clear. No keys/signing/auto-move.",
+  "version": "0.2.0",
+  "description": "Deprecated: merged into l2-send-guard 1.x. This package still works but gets no fixes. See https://github.com/yellowgram/l2-safety-proxy#migrating",
   "type": "module",
   "main": "./dist/api.js",
   "types": "./dist/api.d.ts",
@@ -17,7 +17,6 @@
     "docs/DEMO.md",
     "SECURITY.md",
     "CHANGELOG.md",
-    "CHARTER.md",
     "LICENSE",
     "README.md"
   ],
@@ -36,7 +35,8 @@
     "quarantine",
     "sweep-brake",
     "agent",
-    "fail-closed"
+    "fail-closed",
+    "deprecated"
   ],
   "license": "MIT",
   "author": {

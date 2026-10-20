@@ -2,7 +2,7 @@ import type { QuarantineStore } from "./store.js";
 import type { AssetRecord, QuarantineLabel } from "./types.js";
 
 /**
- * Explicit operator reclassify (DC4). Name locked.
+ * Explicit operator reclassify. Name locked.
  * Reaching `clear` requires this path (or documented compose equivalent).
  * Never called from ingest/classify. No timer / enabled=true auto-clear.
  * Records `reclassifyReason` and clears reasonCodes when label becomes clear.

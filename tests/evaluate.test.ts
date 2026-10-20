@@ -148,12 +148,12 @@ describe("classifyInbound + sweep brake", () => {
   });
 });
 
-describe("DC15 / design locks", () => {
-  it("(1) defaultSweepPolicy().enabled === false (DC1)", () => {
+describe(" / design locks", () => {
+  it("(1) defaultSweepPolicy().enabled === false", () => {
     expect(defaultSweepPolicy().enabled).toBe(false);
   });
 
-  it("(2) store down → classify_store_down (DC2)", () => {
+  it("(2) store down → classify_store_down", () => {
     const store = new MemoryQuarantineStore();
     store.setDown(true);
     const r = maySpend(defaultSweepPolicy(), store, "any");
@@ -161,7 +161,7 @@ describe("DC15 / design locks", () => {
     expect(r.code).toBe("classify_store_down");
   });
 
-  it("(3) quarantine asset → sweep_braked even when enabled: true (DC5)", () => {
+  it("(3) quarantine asset → sweep_braked even when enabled: true", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_BAD,
@@ -176,7 +176,7 @@ describe("DC15 / design locks", () => {
     expect(r.label).toBe("quarantine");
   });
 
-  it("(4) toxic asset → sweep_braked when enabled: true (DC5)", () => {
+  it("(4) toxic asset → sweep_braked when enabled: true", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_OK,
@@ -191,7 +191,7 @@ describe("DC15 / design locks", () => {
     expect(r.label).toBe("toxic");
   });
 
-  it("(5) empty allowlists + default require true → quarantine on unknown token/sender (DC10)", () => {
+  it("(5) empty allowlists + default require true → quarantine on unknown token/sender", () => {
     const empty = defaultFeedPolicy();
     expect(empty.requireTokenAllow).toBe(true);
     expect(empty.requireSenderAllow).toBe(true);
@@ -208,7 +208,7 @@ describe("DC15 / design locks", () => {
     expect(c.reasonCodes).toContain("sender_not_allowed");
   });
 
-  it("(6) dust → toxic and not in balanceView.spendable (DC3/DC4)", () => {
+  it("(6) dust → toxic and not in balanceView.spendable", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_OK,
@@ -223,7 +223,7 @@ describe("DC15 / design locks", () => {
     expect(v.quarantined).not.toContain("dust1");
   });
 
-  it("(7) unknown assetKey → sweep_braked (DC13)", () => {
+  it("(7) unknown assetKey → sweep_braked", () => {
     const store = new MemoryQuarantineStore();
     const r = maySpend(defaultSweepPolicy(), store, "no-such-key");
     expect(r.allow).toBe(false);
@@ -231,7 +231,7 @@ describe("DC15 / design locks", () => {
     expect(r.label).toBe("quarantine");
   });
 
-  it("(8) no public sign/broadcast/auto-move API surface (DC6)", () => {
+  it("(8) no public sign/broadcast/auto-move API surface", () => {
     const banned = [
       "sign",
       "signTransaction",
@@ -260,7 +260,7 @@ describe("DC15 / design locks", () => {
     expect(exported).not.toContain("BurnBrake");
   });
 
-  it("maySpend alias === checkSweepAllowed semantics (DC12)", () => {
+  it("maySpend alias === checkSweepAllowed semantics", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_BAD,
@@ -277,7 +277,7 @@ describe("DC15 / design locks", () => {
     );
   });
 
-  it("reclassify to clear records reason; ingest never auto-clears (DC4)", () => {
+  it("reclassify to clear records reason; ingest never auto-clears", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_OK,
@@ -310,7 +310,7 @@ describe("DC15 / design locks", () => {
     expect(() => reclassify(store, "x", "clear", "  ")).toThrow(/reason/);
   });
 
-  it("balanceView store-down → degraded true, empty ≠ healthy (DC18)", () => {
+  it("balanceView store-down → degraded true, empty ≠ healthy", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_OK,
@@ -330,7 +330,7 @@ describe("DC15 / design locks", () => {
     expect(r.allow).toBe(false);
   });
 
-  it("quarantine never in balanceView.spendable (DC3)", () => {
+  it("quarantine never in balanceView.spendable", () => {
     const store = new MemoryQuarantineStore();
     ingestCredit(feeds(), store, {
       token: TOKEN_BAD,
@@ -343,7 +343,7 @@ describe("DC15 / design locks", () => {
     expect(v.spendable).not.toContain("q-spend");
   });
 
-  it("native still subject to sender allow + dust (DC11/F8)", () => {
+  it("native still subject to sender allow + dust", () => {
     const f = feeds();
     const badSender = classifyInbound(f, {
       token: null,
@@ -365,124 +365,28 @@ describe("DC15 / design locks", () => {
     expect(dustNative.reasonCodes).toContain("dust_poison");
   });
 
-  it("default require flags true; require-false is opt-in not default (DC11)", () => {
+  it("default require flags true; require-false is opt-in not default", () => {
     const d = defaultFeedPolicy();
     expect(d.requireTokenAllow).toBe(true);
     expect(d.requireSenderAllow).toBe(true);
   });
 });
 
-describe("docs honesty lines (DC1/DC2/DC4/DC5/DC6/DC7/DC9/DC10/DC12)", () => {
-  const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-  const readme = readFileSync(join(root, "README.md"), "utf8");
-  const security = readFileSync(join(root, "SECURITY.md"), "utf8");
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-  it("(9) README contains verbatim honesty lines", () => {
-    expect(readme).toContain(
-      "sweep_policy.enabled defaults to false. The brake stays engaged for non-clear inbound until an asset is explicitly clear."
-    );
-    expect(readme).toContain(
-      "When the quarantine store or classify path is unavailable, spend clearance is fail-closed. There is no silent clear."
-    );
-    expect(readme).toContain(
-      "toxic and quarantine never auto-clear. enabled alone does not lift them."
-    );
-    expect(readme).toContain(
-      "sweep_policy.enabled=true does not make quarantine or toxic spendable."
-    );
-    expect(readme).toContain(
-      "This package never holds keys, never signs, and never auto-moves funds."
-    );
-    expect(readme).toContain(
-      "BurnBrake is out of scope. Inbound credit labels are not HTTP spend metering."
-    );
-    expect(readme).toContain(
-      "P0 is offline classify + brake + fixtures. Live oracle / intel SaaS is not required; lookalike local pin only if added."
-    );
-    expect(readme).toContain(
-      "Empty token/sender allowlists under default require flags quarantine unknowns. Empty does not mean allow-all."
-    );
-    expect(readme).toContain(
-      "Any outbound transfer or spend of non-clear inbound funds must consult the brake. A sweep-named method check alone is not enough."
-    );
+describe("deprecation", () => {
+  it("README says the package is deprecated and points to l2-send-guard", () => {
+    const text = readFileSync(join(root, "README.md"), "utf8");
+    expect(text).toContain("(deprecated)");
+    expect(text).toContain("l2-send-guard");
   });
-
-  it("SECURITY verbatim DC2 and DC6 lines", () => {
-    expect(security).toContain(
-      "When the quarantine store or classify path is unavailable, spend clearance is fail-closed. There is no silent clear."
-    );
-    expect(security).toContain(
-      "This package never holds keys, never signs, and never auto-moves funds."
-    );
-  });
-
-  it("package private fences (DC16)", () => {
-    const pkg = JSON.parse(
-      readFileSync(join(root, "package.json"), "utf8")
-    ) as Record<string, unknown>;
-    expect(pkg.private).toBeUndefined();
-    expect(pkg.repository).toEqual({
-      type: "git",
-      url: "git+https://github.com/yellowgram/recv-sweep-brake.git",
-    });
-    expect(pkg.homepage).toBe("https://www.yellowgram.dev/oss");
-    expect(pkg.bugs).toEqual({
-      url: "https://github.com/yellowgram/recv-sweep-brake/issues",
-    });
-    expect(pkg.prepublishOnly).toBeUndefined();
-    expect(
-      (pkg.scripts as Record<string, unknown> | undefined)?.prepublishOnly
-    ).toBeUndefined();
-    expect(PACKAGE_VERSION).toBe("0.1.0");
-  });
-
-  it("Soft* conversion phrases absent; ban token only OK (DC16)", () => {
-    // Product/docs/source only (exclude this test file — banned needles live here as data).
-    const scanRoots = [
-      "README.md",
-      "SECURITY.md",
-      "CHARTER.md",
-      "package.json",
-      "scripts/demo-offline.mjs",
-      "docs/fixtures/offline.expected.txt",
-      "src/api.ts",
-      "src/brake.ts",
-      "src/classify.ts",
-      "src/ingest.ts",
-      "src/reclassify.ts",
-      "src/store.ts",
-      "src/types.ts",
-      "IMPLEMENT_NOTES.md",
-    ];
-    // Build needles without embedding banned Soft* conversion forms as contiguous literals.
-    const bannedNeedles = [
-      "Soft" + "Pay",
-      "Soft" + " Checkout",
-      "Soft" + "WTP",
-      "soft" + "-pay",
-      "conversion" + "-pressure",
-      "willingness" + "-to-pay",
-      "willingness" + " to pay",
-    ];
-    for (const rel of scanRoots) {
-      const text = readFileSync(join(root, rel), "utf8");
-      for (const needle of bannedNeedles) {
-        expect(text.toLowerCase().includes(needle.toLowerCase()), `${rel} contains ${needle}`).toBe(false);
-      }
-    }
-  });
-
-  it("README compose peers mention only (DC17)", () => {
-    expect(readme).toContain("recv-approval-watch");
-    expect(readme).toContain("send-approve-bound");
-    expect(readme).toContain("send-permit2-bound");
-    expect(readme).toContain("send-idempotency");
-    expect(readme).toContain("recv-sweep-brake");
-    expect(readme).toMatch(/recv classify feeds → recv-quarantine → recv-sweep-brake/);
+  it("version is 0.2.0 in package.json and PACKAGE_VERSION", () => {
+    const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+    expect(pkg.version).toBe("0.2.0");
+    expect(PACKAGE_VERSION).toBe("0.2.0");
   });
 });
-
-describe("demo sealed fixture (DC15-10)", () => {
+describe("demo sealed fixture", () => {
   it("offline.expected.txt present and non-empty", () => {
     const root = join(dirname(fileURLToPath(import.meta.url)), "..");
     const expected = readFileSync(
@@ -491,6 +395,6 @@ describe("demo sealed fixture (DC15-10)", () => {
     );
     expect(expected).toContain("sweep_policy.enabled → false");
     expect(expected).toContain("code=sweep_braked");
-    expect(expected).toContain("no Soft*");
+    expect(expected).toContain("deprecated: use l2-send-guard");
   });
 });

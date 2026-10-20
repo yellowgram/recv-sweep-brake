@@ -4,7 +4,7 @@ import type { FeedPolicy, InboundCredit, AssetRecord } from "./types.js";
 
 /**
  * Classify + store. No auto-move. No keys/signing.
- * Never calls reclassify — toxic/quarantine never auto-clear (DC4).
+ * Never calls reclassify — toxic/quarantine never auto-clear.
  */
 export function ingestCredit(
   feeds: FeedPolicy,

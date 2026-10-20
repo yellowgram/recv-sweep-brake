@@ -1,6 +1,6 @@
 export type QuarantineLabel = "clear" | "quarantine" | "toxic";
 
-/** Closed P0 code set (DC14). ok_brake_disabled_clear_only removed — never allow non-clear (DC5). */
+/** Closed code set. ok_brake_disabled_clear_only removed — never allow non-clear. */
 export type SweepBrakeCode =
   | "sweep_braked"
   | "dust_poison"
@@ -12,8 +12,8 @@ export type SweepBrakeCode =
 export interface SweepPolicy {
   /**
    * When false (DEFAULT), brake is engaged for all non-clear assets.
-   * Founder fence: no auto-sweep until explicitly enabled AND asset clear.
-   * enabled=true alone does NOT make quarantine/toxic spendable (DC5).
+   * No auto-sweep until explicitly enabled AND asset clear.
+   * enabled=true alone does NOT make quarantine/toxic spendable.
    */
   enabled: boolean;
 }
@@ -27,12 +27,12 @@ export interface FeedPolicy {
   dustThreshold: bigint;
   /**
    * When true (DEFAULT) and tokenAllow empty/miss → quarantine unknowns.
-   * Empty does not mean allow-all (DC10). Setting false is operator opt-in (DC11).
+   * Empty does not mean allow-all. Setting false is operator opt-in.
    */
   requireTokenAllow: boolean;
   /**
    * When true (DEFAULT) and senderAllow empty/miss → quarantine unknowns.
-   * Empty does not mean allow-all (DC10). Setting false is operator opt-in (DC11).
+   * Empty does not mean allow-all. Setting false is operator opt-in.
    */
   requireSenderAllow: boolean;
 }
@@ -49,7 +49,7 @@ export interface AssetRecord {
   label: QuarantineLabel;
   reasonCodes: SweepBrakeCode[];
   /**
-   * Set only by explicit operator `reclassify` (DC4).
+   * Set only by explicit operator `reclassify`.
    * Never written by ingest/classify.
    */
   reclassifyReason?: string;
@@ -72,7 +72,7 @@ export interface BalanceView {
   quarantined: string[];
   toxic: string[];
   /**
-   * When true, store is down — empty lists are NOT a healthy all-clear (DC18).
+   * When true, store is down — empty lists are NOT a healthy all-clear.
    * Spend must still call checkSweepAllowed / maySpend.
    */
   degraded: boolean;

@@ -121,7 +121,7 @@ store.setDown(false);
 
 out("");
 out(
-  "charter: no Soft* · no Polar · no custody · BurnBrake out · LaunchGate-before-expansion"
+  "deprecated: use l2-send-guard 1.x · this package holds no keys"
 );
 out(
   "compose: recv classify → quarantine → sweep-brake → send; approval-watch upstream; send-rail peers"

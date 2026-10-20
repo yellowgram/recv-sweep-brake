@@ -8,9 +8,9 @@ import type {
 /**
  * Minimal priced-with feeds: token allow, sender allow, dust-poison.
  * Unknown → quarantine (fail-closed on spend clearance).
- * Empty allowlists under default require*=true quarantine unknowns (DC10).
- * Native skips token-allow but remains subject to sender allow + dust (DC11/F8).
- * NO keys / signing / auto-move. Does not call reclassify (DC4).
+ * Empty allowlists under default require*=true quarantine unknowns.
+ * Native skips token-allow but remains subject to sender allow + dust.
+ * NO keys / signing / auto-move. Does not call reclassify.
  */
 export function classifyInbound(
   feeds: FeedPolicy,

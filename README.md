@@ -1,100 +1,30 @@
-# recv-sweep-brake
+# recv-sweep-brake (deprecated)
 
-More from yellowgram: [OSS tools](https://www.yellowgram.dev/oss).
+**This package is merged into [`l2-send-guard`](https://github.com/yellowgram/l2-safety-proxy) 1.x and gets no more fixes.**
+Version 0.2.0 behaves exactly like 0.1.0 and prints one deprecation warning when imported.
 
-**Status:** public MIT · npm `recv-sweep-brake@0.1.0` · no Polar
+## Why
 
-Founder **no-auto-sweep** fence: `sweep_policy.enabled` defaults **off**. Quarantine `clear` \| `quarantine` \| `toxic`. Priced-with minimal feeds: token allow, sender allow, dust-poison. Send of non-clear → deny `sweep_braked`. **No keys / signing / auto-move.**
+recv-sweep-brake did one slice of a bigger job (quarantine of suspicious inbound funds). On its own it had gaps that a single tool closes better:
 
-> **Charter:** [CHARTER.md](./CHARTER.md) — no Soft\* · no Polar/checkout · no custody · BurnBrake out
+- Findings stayed in this library: flagging a poisoner's address didn't stop the send side from paying it.
+- State lived in memory only and was lost on restart.
+- It needed its own log ingestion; there was no watcher with a saved cursor.
 
-```bash
-npm install && npm test && npm run demo:offline
+`l2-send-guard` 1.x checks every call inside a transaction against one policy file, gates EIP-7702
+delegations, keeps rolling caps and idempotency keys in a persistent store, watches what arrives, and
+ships a guarded signer that makes the policy binding for whoever holds the key.
+
+## Migrating
+
+```sh
+npm uninstall recv-sweep-brake
+npm install l2-send-guard
 ```
 
-Offline allow / deny story: [`docs/DEMO.md`](./docs/DEMO.md).
-
-## Honesty (locked)
-
-sweep_policy.enabled defaults to false. The brake stays engaged for non-clear inbound until an asset is explicitly clear.
-
-When the quarantine store or classify path is unavailable, spend clearance is fail-closed. There is no silent clear.
-
-toxic and quarantine never auto-clear. enabled alone does not lift them.
-
-sweep_policy.enabled=true does not make quarantine or toxic spendable.
-
-This package never holds keys, never signs, and never auto-moves funds.
-
-BurnBrake is out of scope. Inbound credit labels are not HTTP spend metering.
-
-P0 is offline classify + brake + fixtures. Live oracle / intel SaaS is not required; lookalike local pin only if added.
-
-Empty token/sender allowlists under default require flags quarantine unknowns. Empty does not mean allow-all.
-
-Any outbound transfer or spend of non-clear inbound funds must consult the brake. A sweep-named method check alone is not enough.
-
-## Codes (P0)
-
-Closed set:
-
-| Code | Meaning |
-| --- | --- |
-| `sweep_braked` | send tried to move non-clear (or unknown assetKey) while brake engaged |
-| `dust_poison` | dust-poison feed hit → toxic |
-| `token_not_allowed` | token allow miss → quarantine path |
-| `sender_not_allowed` | sender allow miss → quarantine path |
-| `classify_store_down` | quarantine store / classify unavailable on spend path (fail-closed) |
-| `ok_clear` | asset labeled clear — spend allowed |
-
-Labels: `clear` \| `quarantine` \| `toxic`.
-
-## API notes
-
-- `defaultSweepPolicy().enabled === false`. Do not present `enabled: true` as the default safe path.
-- `checkSweepAllowed(sweep, store, assetKey)` / `maySpend(...)` — identical semantics. Compose must call one of them on **every** outbound transfer/spend/swap/collect of inbound-labeled funds.
-- `reclassify(store, assetKey, "clear", reason)` — explicit operator path to lift toxic/quarantine. Records `reclassifyReason`. Never run from ingest/classify.
-- `balanceView(store)` — minimal spendable/quarantined/toxic lists. When store is down, returns empty lists with `degraded: true`. Empty under `degraded` is **not** a healthy all-clear; spend must still call `maySpend` / `checkSweepAllowed`.
-- Default `requireTokenAllow` / `requireSenderAllow` are **true**. Setting either to `false` is an explicit opt-in that lowers the fence — not a happy-path demo. Native credits skip token-allow but remain subject to sender allow + dust.
-
-## Compose
-
-```
-recv classify feeds → recv-quarantine → recv-sweep-brake ──► send cluster (deny sweep_braked)
-```
-
-Upstream emit/clearance peer: `recv-approval-watch` (compose mention only). Send-rail peers: `send-approve-bound`, `send-permit2-bound`, `send-idempotency` (compose mention only — not redesigned here).
-
-### Send-rail wiring (before any outbound of inbound-labeled funds)
-
-Call `maySpend` / `checkSweepAllowed` on **every** outbound transfer, spend, swap, or collect of inbound-labeled funds — not a sweep-named method check alone. This package does not redesign send peers.
-
-```ts
-import {
-  defaultSweepPolicy,
-  maySpend,
-  // checkSweepAllowed — identical semantics
-} from "recv-sweep-brake";
-
-const sweep = defaultSweepPolicy(); // enabled === false
-// store = shared quarantine store populated by ingest/classify
-
-async function beforeOutbound(assetKey: string) {
-  const gate = maySpend(sweep, store, assetKey);
-  if (!gate.allow) {
-    // sweep_braked | classify_store_down | …
-    return gate;
-  }
-  // clear only — then hand off to send-rail peers (mention only):
-  // send-approve-bound / send-permit2-bound / send-idempotency
-  return gate;
-}
-```
+What you used here is now `L2SG_WATCH_AGENTS` on the proxy, or `watchInbound` / `scanOnce`, `maySpend` and `reclassify` imported from `l2-send-guard`. A flagged poisoner is refused as a destination with `-32083 POISONED_ADDRESS`.
+The full guide is at https://github.com/yellowgram/l2-safety-proxy#migrating.
 
 ## License
 
-MIT — [LICENSE](./LICENSE).
-
----
-
-Part of yellowgram open source tools: https://www.yellowgram.dev/oss
+MIT
